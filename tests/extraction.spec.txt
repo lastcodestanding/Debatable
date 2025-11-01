@@ -1,0 +1,11 @@
+(Placeholder) Future test plan:
+
+Test: naiveSentenceSplit
+- Input: "The Earth has one moon. Quantum supremacy is achieved. This changes everything forever!"
+- Expect: 3 sentences split correctly.
+
+Test: deduplication
+- Provide duplicate paragraphs -> expect unique sentences only.
+
+Test: classification fallback
+- Simulate API error -> expect neutral classification.

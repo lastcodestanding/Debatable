@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Debatable",
+  "version": "0.1.0",
+  "description": "Highlight potentially false, debated, or hyperbolic statements on web pages.",
+  "permissions": ["storage", "scripting", "activeTab"],
+  "host_permissions": ["<all_urls>"],
+  "background": { "service_worker": "src/background.js", "type": "module" },
+  "action": { "default_popup": "src/ui/popup.html" },
+  "options_page": "src/ui/options.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/contentScript.js"],
+      "css": ["src/styles/highlights.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/ui/panel.html", "src/styles/highlights.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

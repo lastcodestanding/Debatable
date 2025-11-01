@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Debatable Panel</title>
+  <style>
+    :root {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color-scheme: dark;
+    }
+    body {
+      margin: 0;
+      background: linear-gradient(160deg, #060915 0%, #0f172a 40%, #111828 100%);
+      color: #e5edff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .panel-shell {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 26px 26px 22px;
+      height: 100vh;
+      backdrop-filter: blur(18px);
+      background: radial-gradient(circle at -10% -10%, rgba(56, 189, 248, 0.22), transparent 55%),
+                  radial-gradient(circle at 110% 10%, rgba(168, 85, 247, 0.18), transparent 50%);
+    }
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .panel-title {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .panel-title h1 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .mode-pill {
+      align-self: flex-start;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      background: rgba(94, 234, 212, 0.16);
+      color: #5eead4;
+    }
+    .panel-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.16s ease, background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+      background: linear-gradient(120deg, rgba(59, 130, 246, 0.18), rgba(168, 85, 247, 0.12));
+      color: #e5edff;
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.35);
+    }
+    button:hover {
+      transform: translateY(-1px);
+      background: linear-gradient(120deg, rgba(59, 130, 246, 0.28), rgba(168, 85, 247, 0.22));
+      box-shadow: 0 18px 32px rgba(15, 23, 42, 0.4);
+    }
+    button.danger { color: #fecaca; background: rgba(239, 68, 68, 0.18); }
+    button.danger:hover { background: rgba(239, 68, 68, 0.26); }
+    .progress-card {
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      border-radius: 16px;
+      padding: 16px 18px 18px;
+      background: rgba(11, 17, 30, 0.72);
+      display: grid;
+      gap: 10px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 32px rgba(8, 12, 24, 0.35);
+    }
+    .progress-bar {
+      position: relative;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.18);
+      overflow: hidden;
+    }
+    .progress-fill {
+      position: absolute;
+      inset: 0;
+      width: 0;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #38bdf8 0%, #a855f7 100%);
+      transition: width 0.24s ease;
+    }
+    .progress-label {
+      font-size: 12px;
+      color: #dbeafe;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .filter-btn {
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(148, 163, 184, 0.08);
+      color: #e2e8f0;
+      transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    }
+    .filter-btn:hover {
+      transform: translateY(-1px);
+    }
+    .filter-btn.active {
+      background: rgba(59, 130, 246, 0.32);
+      border-color: rgba(59, 130, 246, 0.52);
+      color: #e0f2fe;
+      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
+    }
+    .list-container {
+      flex: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+      display: grid;
+      gap: 12px;
+    }
+    .item-card {
+      background: rgba(12, 18, 31, 0.85);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      padding: 18px 20px;
+      display: grid;
+      gap: 12px;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+    }
+    .item-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(168, 85, 247, 0.4);
+      box-shadow: 0 22px 38px rgba(10, 12, 24, 0.55);
+    }
+    .item-card-focus {
+      border-color: rgba(59, 130, 246, 0.55);
+      box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.45), 0 18px 36px rgba(15, 23, 42, 0.48);
+    }
+    .item-card:active {
+      transform: translateY(0);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: rgba(148, 163, 184, 0.18);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .item-text {
+      font-size: 15px;
+      line-height: 1.62;
+      color: #f1f5ff;
+    }
+    .meta {
+      font-size: 12px;
+      color: #9ca9c9;
+    }
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      border: 1px dashed rgba(148, 163, 184, 0.22);
+      border-radius: 14px;
+      color: #94a3b8;
+    }
+    .error-card {
+      border-radius: 12px;
+      border: 1px solid rgba(239, 68, 68, 0.24);
+      background: rgba(239, 68, 68, 0.1);
+      color: #fecaca;
+      padding: 12px 14px;
+      font-size: 12px;
+    }
+    .error-card.hidden { display: none; }
+    footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      font-size: 12px;
+      color: #8fa0c5;
+      padding-top: 6px;
+      border-top: 1px solid rgba(148, 163, 184, 0.16);
+    }
+    .stats {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 560px) {
+      .panel-shell {
+        padding: 22px 18px 18px;
+      }
+      .item-card {
+        padding: 16px;
+        border-radius: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="panel-shell">
+    <header class="panel-header">
+      <div class="panel-title">
+        <h1>Debatable</h1>
+        <span id="modePill" class="mode-pill" style="display:none"></span>
+      </div>
+      <div class="panel-controls">
+        <button id="rerunBtn">Re-run</button>
+        <button id="closeBtn" class="danger">Close</button>
+      </div>
+    </header>
+
+    <section id="progressCard" class="progress-card" style="display:none;">
+      <div class="progress-label">
+        <span id="progressLabel">Processing…</span>
+        <span id="progressEta"></span>
+      </div>
+      <div class="progress-bar">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+    </section>
+
+    <div id="filters" class="filters"></div>
+
+    <section class="list-container" id="list"></section>
+    <div id="empty" class="empty-state">No flagged statements yet. Adjust filters or rerun classification.</div>
+
+    <div id="errorCard" class="error-card hidden"></div>
+
+    <footer>
+      <div class="stats" id="stats"></div>
+      <div id="totalSentences"></div>
+    </footer>
+  </div>
+  <script src="panel.js"></script>
+</body>
+</html>

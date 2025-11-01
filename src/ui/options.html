@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Debatable – Options</title>
+  <style>
+    :root {
+      --bg-grad: radial-gradient(circle at top, #1f2937 0%, #0b0f19 65%);
+      --surface: rgba(15, 23, 42, 0.78);
+      --surface-alt: rgba(15, 23, 42, 0.9);
+      --border: rgba(148, 163, 184, 0.2);
+      --text-primary: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #2563eb;
+      --accent-soft: rgba(37, 99, 235, 0.12);
+      --danger: #ef4444;
+      --radius: 18px;
+      --shadow: 0 40px 80px rgba(15, 23, 42, 0.45);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg-grad);
+      color: var(--text-primary);
+      display: flex;
+      justify-content: center;
+      padding: 48px 24px 64px;
+    }
+
+    .options-shell {
+      width: min(1100px, 100%);
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      padding: 32px 40px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .options-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .options-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .options-header p {
+      margin: 6px 0 0;
+      color: var(--text-muted);
+      max-width: 440px;
+    }
+
+    .options-grid {
+      display: grid;
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--surface-alt);
+      border-radius: calc(var(--radius) - 6px);
+      border: 1px solid var(--border);
+      padding: 26px 28px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .card-header p {
+      margin: 8px 0 0;
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .input-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    label.field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    label.field strong {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: none;
+      color: var(--text-primary);
+      letter-spacing: normal;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="number"],
+    textarea,
+    input[type="color"] {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 12px 14px;
+      color: var(--text-primary);
+      font: 15px/1.5 'Inter', system-ui, sans-serif;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    textarea {
+      min-height: 160px;
+      resize: vertical;
+    }
+
+    input[type="color"] {
+      padding: 0;
+      height: 44px;
+    }
+
+    input:focus,
+    textarea:focus,
+    input[type="color"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .switch input {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+    }
+
+    .card-header code {
+      background: rgba(148, 163, 184, 0.18);
+      color: var(--text-primary);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    .switch-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .switch {
+      .status {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(148, 163, 184, 0.08);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+    }
+
+    button.secondary {
+      background: rgba(148, 163, 184, 0.12);
+      color: var(--text-primary);
+    }
+
+    button.ghost {
+      background: transparent;
+      color: var(--text-muted);
+    }
+
+    button.danger {
+      background: rgba(239, 68, 68, 0.12);
+      color: var(--danger);
+    }
+
+    button:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    button:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .card-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .class-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .class-row-slim {
+      display: grid;
+      grid-template-columns: 20px minmax(0, 160px) minmax(0, 1fr) 56px 32px;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .class-row-slim:hover {
+      border-color: rgba(59, 130, 246, 0.35);
+      box-shadow: 0 12px 24px rgba(8, 12, 24, 0.32);
+    }
+
+    .class-color-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(15, 23, 42, 0.6);
+    }
+
+    .class-row-slim input[type="text"] {
+      font-size: 14px;
+      padding: 8px 10px;
+    }
+
+    .class-row-slim .definition-input {
+      font-size: 13px;
+    }
+
+    .class-row-slim input[type="color"] {
+      width: 46px;
+      height: 34px;
+      padding: 0;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .class-remove {
+      border: none;
+      background: rgba(148, 163, 184, 0.12);
+      color: #fca5a5;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease;
+    }
+
+    .class-remove:hover {
+      transform: translateY(-1px);
+      background: rgba(239, 68, 68, 0.28);
+    }
+
+    .prompt-note {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    hr.divider {
+      width: 100%;
+      border: none;
+      border-top: 1px solid rgba(148, 163, 184, 0.1);
+      margin: 18px 0 0;
+    }
+
+    .danger-zone {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .options-shell { padding: 28px 22px 36px; }
+      .class-row-slim {
+        grid-template-columns: 16px minmax(0, 1fr) minmax(0, 1fr) 46px 28px;
+        gap: 10px;
+      }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(16px);
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 10px 18px;
+      border-radius: 12px;
+      color: #f8fafc;
+      font-size: 14px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.45);
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 99999;
+    }
+
+    .toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="options-shell">
+    <header class="options-header">
+      <div>
+        <h1>Debatable</h1>
+        <p>Configure API credentials, runtime behavior, and the categories used to annotate web content.</p>
+      </div>
+    </header>
+
+    <main class="options-grid">
+      <section class="card">
+        <div class="card-header">
+          <h2>On-Device Model</h2>
+          <p>Uses Gemini Nano running locally in your browser. No external API needed.</p>
+        </div>
+        <div class="input-grid">
+          <label class="field">
+            <strong>Model Identifier</strong>
+            <input type="text" id="modelId" placeholder="gemini-nano" />
+          </label>
+        </div>
+        <div class="card-actions">
+          <button class="primary" id="saveApi">Save Model Settings</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Runtime Behavior</h2>
+          <p>Toggle processing preferences and rate limits for classification requests.</p>
+        </div>
+        <div class="switch-row">
+          <label class="switch"><input type="checkbox" id="enablePromptApi" /> Enable Prompt API</label>
+          <label class="switch"><input type="checkbox" id="privacyMode" /> Privacy Mode</label>
+          <label class="switch"><input type="checkbox" id="debugLogging" /> Debug Logging</label>
+        </div>
+        <div class="input-grid">
+          <label class="field">
+            <strong>Max Sentences Per Page</strong>
+            <input type="number" id="maxSentences" min="1" placeholder="60" />
+          </label>
+          <label class="field">
+            <strong>Batch Size</strong>
+            <input type="number" id="batchSize" min="1" placeholder="20" />
+          </label>
+        </div>
+        <div class="card-actions">
+          <button class="primary" id="saveBehavior">Save Behavior</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Classification Categories</h2>
+          <p>Define the labels, definitions, and colors used when highlighting sentences. IDs should match the categories produced by your classifier.</p>
+        </div>
+  <div id="classList" class="class-list"></div>
+        <div class="card-actions">
+          <button class="secondary" id="addClassBtn">Add Category</button>
+          <button class="primary" id="saveClasses">Save Categories</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Prompt Template</h2>
+          <p>Customize the payload sent to the Prompt API. Available placeholders: <code>{{STATEMENTS_JSON}}</code>, <code>{{DEFINITIONS}}</code>, <code>{{CLASS_IDS}}</code>.</p>
+        </div>
+        <textarea id="promptTemplate"></textarea>
+        <div class="card-actions">
+          <button class="primary" id="savePrompt">Save Template</button>
+          <button class="secondary" id="resetPrompt">Reset Default</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <h2>Maintenance</h2>
+          <p>Clear cached classifications to force a fresh re-run across pages.</p>
+        </div>
+        <div class="danger-zone">
+          <span class="prompt-note">Cached responses improve responsiveness. Purge if categories or API behavior changed.</span>
+          <button class="danger" id="purgeCache">Purge Cache</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toastHost"></div>
+  <script src="options.js"></script>
+</body>
+</html>
