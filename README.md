@@ -188,21 +188,7 @@ Example custom category:
 - **Debugging**: Enable debug logging in options to see AI prompts and responses
 - **Custom Categories**: Define domain-specific categories (e.g., "medical-claim", "legal-statement")
 - **Keyboard Navigation**: Tab through highlights, Enter to jump to next flagged statement
-
-
-## 📊 Demo & Screenshots
-
-### Example Use Case: News Article
-
-![Debatable in action](https://via.placeholder.com/800x450?text=Screenshot+Coming+Soon)
-
-### Side Panel View
-
-![Side panel showing flagged statements](https://via.placeholder.com/400x600?text=Panel+Screenshot)
-
-### Custom Categories Configuration
-
-![Options page with custom categories](https://via.placeholder.com/800x500?text=Options+Screenshot)
+  
 
 ## 🤝 Contributing
 
